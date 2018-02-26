@@ -17,19 +17,19 @@ var connection = mysql.createConnection({
 });
 
 console.log("Welcome to Bamazon! These are the items we have for sale:");
-    startBamazon = function(){
 
-        connection.connect(function(err) {
-          if (err) throw err;
-          connection.query("SELECT * FROM products", function (err, result, fields) {
-            if (err) throw err;
-            console.log(result);
-            //console logs array of objects - how to beautify this to make it a clean list?
-          });
-        });
+function start(){
+    connection.query('SELECT * FROM products', function(err, res){
+        if (err) throw err;
 
-    }
-    startBamazon();
+    for(var i = 0; i<res.length;i++){
+    console.log("ID: " + res[i].id + " | " + "Product: " + res[i].product_name + " | " + "Department: " + res[i].department_name + " | " + "Price: " + res[i].price + " | " + "QTY: " + res[i].stock_quantity);
+    console.log('--------------------------------------------------------------------------------------------------')
+  }
+    })
+
+}
+start();
 
     function userInputId() {
       inquirer
@@ -44,19 +44,20 @@ console.log("Welcome to Bamazon! These are the items we have for sale:");
     };
     userInputId();
 
-    function userInputQty() {
-      inquirer
-        .prompt({
-          name: "id",
-          type: "input",
-          message: "How many would you like to buy?"
-        })
-        .then(function(input) {
-        //user types answer //
-        //check database to see if there is enough
-        //if not enough - INSUFFICIENT
-        //if there is enough, then update the SQL DB to reflect new QTY
-        //display customer total price
-        })
-    };
-    userInputQTY();
+    //
+    //
+    // function userInputQty() {
+    //   inquirer
+    //     .prompt({
+    //       name: "id",
+    //       type: "input",
+    //       message: "How many would you like to buy?"
+    //     })
+    //     .then(function(input) {
+    //     //user types answer //
+    //     //check database to see if there is enough
+    //     //if not enough - INSUFFICIENT
+    //     //if there is enough, then update the SQL DB to reflect new QTY
+    //     })
+    // };
+    // userInputQTY();
