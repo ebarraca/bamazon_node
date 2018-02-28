@@ -40,10 +40,9 @@ start();
         })
         .then(function(userResponse) {
             for(var i = 0; i<res.length;i++){
-                if (res.id==userResponse.id){
+                if (res[i].id==userResponse.id){
                     userInputQty(userResponse.id);
                 }
-
             }
         })
     };
@@ -56,10 +55,52 @@ start();
           message: "How many would you like to buy?"
         })
         .then(function(input) {
-        //user types answer //
+            connection.query('SELECT * FROM products WHERE id=' + userResponseId, function(err, res){
+                if (err) throw err;
+                    for (var i = 0; i<res.length;i++){
+                        if(res[i].stock_quantity < input.id){
+                            console.log("Insufficient Quantity. Your order is cancelled.")
+                        } else {
+                            var price = (res[i].price * input.id)
+                            console.log("Price for all items is " + price);
+                            connection.query(
+                              "UPDATE products SET ? WHERE ?",
+                              [
+                                {
+                                  stock_quantity: (res[i].stock_quantity-input.id)
+                                },
+                                {
+                                 id: userResponseId
+                                }
+                              ],
+                              function(err, response) {
+                                if (err) throw err;
+                                console.log("Order successful!")
+                                start();
+                              }
+                            );
+
+                        }
+
+                    }
+                })
+
+
+
+
+
+            // for(var i = 0; i<userResponseId.length;i++){
+            //     console.log("user response "+ userResponseId[i]);
+            //     if (input < userResponseId[i].stock_quantity){
+            //         console.log ("if " + userResponseId[i].stock_quantity)
+            //     } else {
+            //         console.log (userResponseId[i].stock_quantity)
+            //
+            //     }
+            //
+            // }
         //check database to see if there is enough
         //if not enough - INSUFFICIENT
         //if there is enough, then update the SQL DB to reflect new QTY
         })
     };
-    userInputQTY();
