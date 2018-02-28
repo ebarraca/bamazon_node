@@ -76,31 +76,24 @@ start();
                               function(err, response) {
                                 if (err) throw err;
                                 console.log("Order successful!")
-                                start();
-                              }
-                            );
-
-                        }
+                                inquirer.prompt([
+                                     {
+                                         name: "yesOrNo",
+                                         type: "rawlist",
+                                         message: "Would you like to order anything else?",
+                                         choices: ["Y", "N"]
+                                     }])
+                                     .then(function(inquirerResponse) {
+                                         if (inquirerResponse.yesOrNo == "Y"){
+                                             start();
+                                             } else {
+                                                 console.log("Thank you for your order!")
+                                             }
+                                     });
+                        })
 
                     }
-                })
-
-
-
-
-
-            // for(var i = 0; i<userResponseId.length;i++){
-            //     console.log("user response "+ userResponseId[i]);
-            //     if (input < userResponseId[i].stock_quantity){
-            //         console.log ("if " + userResponseId[i].stock_quantity)
-            //     } else {
-            //         console.log (userResponseId[i].stock_quantity)
-            //
-            //     }
-            //
-            // }
-        //check database to see if there is enough
-        //if not enough - INSUFFICIENT
-        //if there is enough, then update the SQL DB to reflect new QTY
+                }
         })
-    };
+    });
+}    
