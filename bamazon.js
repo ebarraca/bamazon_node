@@ -1,6 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var prompt = require ("prompt");
+var express= require ("express")
+var bodyParser = require('body-parser')
 //new folder, package json, npm install mysql and inquirer
 
 // create the connection information for the sql database
@@ -15,6 +17,13 @@ var connection = mysql.createConnection({
   password: "",
   database: "bamazon_db"
 });
+
+var app = express();
+var PORT = process.env.PORT || 3000;
+// Sets up the Express app to handle data parsing
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 
 console.log("Welcome to Bamazon! These are the items we have for sale:");
 
@@ -96,4 +105,4 @@ start();
                 }
         })
     });
-}    
+}
